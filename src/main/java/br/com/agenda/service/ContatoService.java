@@ -1,5 +1,10 @@
 package br.com.agenda.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.agenda.model.Contato;
@@ -20,9 +25,13 @@ public class ContatoService {
 		return contatoRepository.save(contato);
 	}
 	
-	public Contato buscar(Integer id) {
-		System.out.println(contatoRepository.getById(id));
-		return contatoRepository.getById(id);
+	public Optional<Contato> buscar(Integer id) {
+		 Optional<Contato> contato = contatoRepository.findById(id);
+		 return contato;
+	}
+	
+	public List<Contato> buscarTodos() {
+		return contatoRepository.findAll();
 	}
 
 }

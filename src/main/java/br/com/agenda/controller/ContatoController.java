@@ -1,7 +1,10 @@
 package br.com.agenda.controller;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +36,18 @@ public class ContatoController {
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Contato> buscarPorId(@PathVariable Integer id){
-		System.out.println(id);
-		return ResponseEntity.ok(this.contatoService.buscar(id));
+	public ResponseEntity<?> buscarPorId(@PathVariable Integer id){
+		Optional<Contato> contato = contatoService.buscar(id);
+		
+		if (contato.isPresent()){
+            return ResponseEntity.ok().body(contato);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contato não encontrado");
+	}
+	
+	@GetMapping
+	public List<Contato> buscarTodos(){
+		return contatoService.buscarTodos();
 	}
 
 }
