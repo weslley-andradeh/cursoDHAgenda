@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.agenda.model.Contato;
+import br.com.agenda.model.Email;
+import br.com.agenda.model.Endereco;
 import br.com.agenda.model.dto.ContatoInputDto;
 import br.com.agenda.service.ContatoService;
 
@@ -31,6 +33,20 @@ public class ContatoController {
 	@PostMapping
 	public ResponseEntity<Contato> criar(@RequestBody ContatoInputDto contatoDto) {
 		Contato contato = contatoService.salvar(contatoDto);
+		URI uri = UriComponentsBuilder.fromPath("contato/{id}").buildAndExpand(contato.getId()).toUri();
+		return ResponseEntity.created(uri).body(contato);
+	}
+	
+	@PostMapping("salvar/{id}/email")
+	public ResponseEntity<Contato> adicionarEmail(@PathVariable Integer id, @RequestBody Email email) {
+		Contato contato = contatoService.adicionaEmail(id, email);
+		URI uri = UriComponentsBuilder.fromPath("contato/{id}").buildAndExpand(contato.getId()).toUri();
+		return ResponseEntity.created(uri).body(contato);
+	}
+	
+	@PostMapping("salvar/{id}/endereco")
+	public ResponseEntity<Contato> adicionarEndereco(@PathVariable Integer id, @RequestBody Endereco endereco) {
+		Contato contato = contatoService.adicionaEndereco(id, endereco);
 		URI uri = UriComponentsBuilder.fromPath("contato/{id}").buildAndExpand(contato.getId()).toUri();
 		return ResponseEntity.created(uri).body(contato);
 	}

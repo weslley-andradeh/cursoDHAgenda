@@ -1,10 +1,13 @@
 package br.com.agenda.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Endereco {
@@ -15,7 +18,8 @@ public class Endereco {
 	private String rua;
 	private String bairro;
 	private Integer numero;
-	@ManyToOne
+	@JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
 	private Contato contato;
 	
 	public Endereco(String rua, String bairro, Integer numero, Contato contato) {
